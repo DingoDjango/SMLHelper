@@ -132,7 +132,14 @@
     /// </summary>
     public class ModChoiceOption : ModOption
     {
+        /// <summary>
+        /// Gets the array of options that can be selected from.
+        /// </summary>
+        /// <value>
+        /// The options to select from.
+        /// </value>
         public string[] Options { get; }
+
         public int Index { get; }
 
         /// <summary>

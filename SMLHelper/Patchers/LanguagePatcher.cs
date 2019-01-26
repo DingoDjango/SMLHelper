@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.Text;
     using Harmony;
+    using SMLHelper.V2.Options;
 
     internal class LanguagePatcher
     {

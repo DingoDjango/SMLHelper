@@ -1,5 +1,6 @@
 ﻿namespace SMLHelper.V2.Options
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
@@ -7,7 +8,7 @@
     /// <summary>
     /// Indicates how the option is interacted with by the user.
     /// </summary>
-    public enum ModOptionType
+    internal enum ModOptionType
     {
         /// <summary>
         /// The option uses a slider that allows for a choice within a continues range of values within a maximum and minimum.
@@ -33,8 +34,10 @@
     /// <summary>
     /// Abstract class that provides the framework for your mod's in-game configuration options.
     /// </summary>
-    public abstract partial class ModOptions
+    public abstract partial class ModOptions : IEnumerable<ModOption>
     {
+        internal readonly string ModName;
+
         /// <summary>
         /// The name of this set of configuration options.
         /// </summary>
@@ -65,6 +68,8 @@
         public ModOptions(string name)
         {
             Name = name;
+
+            ModName = this.GetType().Assembly.GetName().Name;
         }
 
         /// <summary>
@@ -72,9 +77,12 @@
         /// <para>This method should be composed of calls into the following methods: 
         /// <seealso cref="AddSliderOption"/> | <seealso cref="AddToggleOption"/> | <seealso cref="AddChoiceOption(string, string, string[], int)"/> | <seealso cref="AddKeybindOption(string, string, GameInput.Device, KeyCode)"/>.</para>
         /// <para>Make sure you have subscribed to the events in the constructor to handle what happens when the value is changed:
-        /// <seealso cref="SliderChanged"/> | <seealso cref="ToggleChanged"/> | <seealso cref="ChoiceChanged"/> | <seealso cref="KeybindChanged"/> | <seealso cref="DropdownChanged"/>.</para>
+        /// <seealso cref="SliderChanged"/> | <seealso cref="ToggleChanged"/> | <seealso cref="ChoiceChanged"/> | <seealso cref="KeybindChanged"/>.</para>
         /// </summary>
         public abstract void BuildModOptions();
+
+        public IEnumerator<ModOption> GetEnumerator() => Options.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => Options.GetEnumerator();
     }
 
     /// <summary>
@@ -95,7 +103,7 @@
         /// <summary>
         /// The type of option for this instance.
         /// </summary>
-        public ModOptionType Type { get; }
+        internal ModOptionType Type { get; }
 
         /// <summary>
         /// Base constructor for all mod options.
