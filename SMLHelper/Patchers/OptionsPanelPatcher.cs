@@ -2,6 +2,7 @@
 {
     using Harmony;
     using Options;
+    using SMLHelper.V2.Utility;
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -28,6 +29,9 @@
 
             foreach (ModOptions modOption in modOptions)
             {
+                LanguageOverride.HandleLanguageOverrides(modOption.LanguageLines);
+                modOption.UpdateLanguageLabels();
+
                 optionsPanel.AddHeading(modsTab, modOption.Name);
 
                 foreach (ModOption option in modOption.Options)

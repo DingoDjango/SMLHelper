@@ -5,7 +5,6 @@
     using System.IO;
     using System.Text;
 
-
     internal class LanguageOverride
     {
         private const string LanguageDir = "./QMods/Modding Helper/Language";
@@ -33,7 +32,6 @@
 
             originalCustomLines[modAssemblyName][lineId] = text;
         }
-
 
         private static void WriteOriginalCustomLines()
         {

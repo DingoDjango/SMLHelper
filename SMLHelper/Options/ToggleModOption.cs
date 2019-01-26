@@ -49,6 +49,7 @@
         /// <param name="value">The starting value.</param>
         protected void AddToggleOption(string id, string label, bool value)
         {
+            AddOriginalLabel(id, label);
             _options.Add(id, new ModToggleOption(id, label, value));
         }
     }

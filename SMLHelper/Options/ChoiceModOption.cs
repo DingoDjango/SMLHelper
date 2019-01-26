@@ -1,6 +1,7 @@
 ﻿namespace SMLHelper.V2.Options
 {
     using SMLHelper.V2.Options.Utility;
+    using SMLHelper.V2.Utility;
     using System;
     using System.Linq;
 
@@ -73,7 +74,11 @@
         /// <param name="index">The starting value.</param>
         protected void AddChoiceOption(string id, string label, string[] options, int index)
         {
-            if (!Validator.ValidateChoiceOrDropdownOption(id, label, options, index)) return;
+            if (!Validator.ValidateChoiceOrDropdownOption(id, label, options, index))
+                return;
+
+            AddOriginalLabel(id, label);
+            // TODO Translations for choice options
             _options.Add(id, new ModChoiceOption(id, label, options, index));
         }
         /// <summary>

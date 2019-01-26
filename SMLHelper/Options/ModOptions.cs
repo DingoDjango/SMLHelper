@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using SMLHelper.V2.Utility;
     using UnityEngine;
 
     /// <summary>
@@ -34,14 +35,17 @@
     /// <summary>
     /// Abstract class that provides the framework for your mod's in-game configuration options.
     /// </summary>
-    public abstract partial class ModOptions : IEnumerable<ModOption>
+    public abstract partial class ModOptions
     {
+        private const string Id = "Options_Header";
+
         internal readonly string ModName;
+        internal readonly Dictionary<string, string> LanguageLines;
 
         /// <summary>
         /// The name of this set of configuration options.
         /// </summary>
-        public readonly string Name;
+        public string Name { get; private set; }
 
         /// <summary>
         /// Builds and obtains the <see cref="ModOption"/>s that belong to this instance.
@@ -50,16 +54,14 @@
         {
             get
             {
-                _options = new Dictionary<string, ModOption>();
                 BuildModOptions();
-
                 return _options.Values.ToList();
             }
         }
 
         // This is a dictionary now in case we want to get the ModOption quickly
         // based on the provided ID.
-        private Dictionary<string, ModOption> _options;
+        private readonly Dictionary<string, ModOption> _options;
 
         /// <summary>
         /// Creates a new insteance of <see cref="ModOptions"/>.
@@ -67,9 +69,16 @@
         /// <param name="name">The name that will display above this section of options in the in-game menu.</param>
         public ModOptions(string name)
         {
-            Name = name;
+            this.Name = name;
+            ModName = GetType().Assembly.GetName().Name + "_Options";
 
-            ModName = this.GetType().Assembly.GetName().Name;
+            _options = new Dictionary<string, ModOption>();
+            LanguageLines = new Dictionary<string, string>
+            {
+                { Id, this.Name }
+            };
+
+            LanguageOverride.AddOriginalLanguageLine(ModName, Id, this.Name);
         }
 
         /// <summary>
@@ -81,8 +90,21 @@
         /// </summary>
         public abstract void BuildModOptions();
 
-        public IEnumerator<ModOption> GetEnumerator() => Options.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => Options.GetEnumerator();
+        internal void AddOriginalLabel(string id, string label)
+        {
+            LanguageOverride.AddOriginalLanguageLine(ModName, id, label);
+            LanguageLines[id] = label;
+        }
+
+        internal void UpdateLanguageLabels()
+        {
+            this.Name = LanguageLines[Id];
+
+            foreach (ModOption option in _options.Values)
+            {
+                option.Label = LanguageLines[option.Id];
+            }
+        }
     }
 
     /// <summary>
@@ -98,7 +120,7 @@
         /// <summary>
         /// The display text to be shown for this option in the in-game menus.
         /// </summary>
-        public string Label { get; }
+        public string Label { get; internal set; }
 
         /// <summary>
         /// The type of option for this instance.
@@ -113,9 +135,9 @@
         /// <param name="id">The internal ID if this option.</param>
         internal ModOption(ModOptionType type, string label, string id)
         {
-            Type = type;
-            Label = label;
-            Id = id;
+            this.Type = type;
+            this.Label = label;
+            this.Id = id;
         }
     }
 }

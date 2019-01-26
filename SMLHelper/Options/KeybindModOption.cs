@@ -61,6 +61,7 @@
         /// <param name="key">The starting keybind value.</param>
         protected void AddKeybindOption(string id, string label, GameInput.Device device, KeyCode key)
         {
+            AddOriginalLabel(id, label);
             _options.Add(id, new ModKeybindOption(id, label, device, key));
         }
         /// <summary>

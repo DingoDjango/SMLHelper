@@ -58,6 +58,7 @@
         /// <param name="value">The starting value.</param>
         protected void AddSliderOption(string id, string label, float minValue, float maxValue, float value)
         {
+            AddOriginalLabel(id, label);
             _options.Add(id, new ModSliderOption(id, label, minValue, maxValue, value));
         }
     }
