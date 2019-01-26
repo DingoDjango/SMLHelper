@@ -122,6 +122,7 @@
     <Compile Include="Utility\ExtBannedIdManager.cs" />
     <Compile Include="Utility\ImageUtils.cs" />
     <Compile Include="Utility\KeyCodeUtils.cs" />
+    <Compile Include="Utility\LanguageOverride.cs" />
     <Compile Include="Utility\PlayerPrefsExtra.cs" />
     <Compile Include="Utility\PrefabUtils.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
